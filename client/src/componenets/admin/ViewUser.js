@@ -5,6 +5,8 @@ function ViewUser() {
 
     const [users, setUsers] = useState([])
 
+    /* ------------------------------- LIST USERS ------------------------------- */
+
     useEffect(() => {
 
         try {
@@ -45,9 +47,9 @@ function ViewUser() {
                                     Password
                                 </th>
 
-                                <th scope="col" class="py-3 px-6">
+                                {/* <th scope="col" class="py-3 px-6">
                                     <span class="sr-only">Block</span>
-                                </th>
+                                </th> */}
                             </tr>
                         </thead>
                         <tbody>
@@ -67,9 +69,7 @@ function ViewUser() {
                                         {obj.password}
                                     </td>
 
-                                    <td class="py-4 px-6 text-right">
-                                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                    </td>
+                                   
                                 </tr>
                                 )
 

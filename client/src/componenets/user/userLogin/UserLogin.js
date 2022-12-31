@@ -1,8 +1,6 @@
 import  React from 'react'
 import { FaRegEnvelope, FaLock } from 'react-icons/fa'
-// import google from '../../assets/images/google.png'
-// import image from '../../assets/images/img1.jpg'
-// import { update } from '../../redux/userRedux'
+
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useState } from 'react'

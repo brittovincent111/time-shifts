@@ -35,19 +35,7 @@ const controller = {
                         expiresIn: "365d",
                     })
        
-                    /* --------------------------- login time updating -------------------------- */
-                let details = {
-
-                    date : moment(new Date()).format('l'),
-                    in: Date.now(),
-                    status : 'ongoing'
-                }
-
-                    await userSchemma.updateOne({ email: email } ,
-                         {$push:{attentance:
-                           details
-                          }})
-                    console.log(UserToken)
+            
                     res.status(200).
                         json({ UserToken: UserToken, user: checkEmail })
                 } else {
@@ -78,23 +66,21 @@ const controller = {
        
         try{
 
-           let taskView =  await taskSchemaa.find({userId: req.params.id , status :req.params.type })
-        //    console.log(user , "user")
-       
-           
-
-         console.log(taskView , "viewww")
-
-
+           let taskView =  await taskSchemaa.
+           find({userId: req.params.id , status :req.params.type })
+    
            res.status(200).json({taskView})
 
 
 
         }catch(error){
 
-     console.log(error , "errror")
+            res.status(500).
+            json({ error: "something went wrong" })
         }
     },
+
+    /* ------------------------------- UPDATE TASK ------------------------------ */
 
     updateTask: async(req,res)=>{
 
@@ -102,10 +88,10 @@ const controller = {
 
         try{
 
-            let taskView =  await taskSchemaa.findOne({ _id:req.body.taskId ,userId: req.body.userId  })
+            let taskView =  await taskSchemaa.
+            findOne({ _id:req.body.taskId ,userId: req.body.userId  })
       
 
-           console.log(taskView , "viewwwsssss")
            if(taskView.status == "assigned"){
                
                taskView.status = req.body.status ;
@@ -130,13 +116,12 @@ const controller = {
 
            await taskView.save()
 
-         console.log(taskView , "viewww")
-
-
            res.status(200).json({success : "updated"})
 
         }catch(error){
-            console.log(error , "error")
+
+            res.status(500).
+            json({ error: "something went wrong" })
 
 
         }

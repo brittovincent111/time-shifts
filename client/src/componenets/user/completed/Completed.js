@@ -14,9 +14,11 @@ export default function Completed() {
     const [taskAssigned, setTaskAssigned] = useState([])
     const [updation, setUpdation] = useState()
 
-
+    /* ------------------------------ ID FROM TOKEN ----------------------------- */
     let token = localStorage.getItem('userToken');
     let decoded = jwt_decode(token);
+
+    /* ----------------------------- COMPLETED TASKS ---------------------------- */
 
     useEffect(() => {
 
@@ -25,7 +27,6 @@ export default function Completed() {
 
                 const { data } = await getTasks(decoded.id, "completed")
 
-                console.log(data, "data")
                 setTaskAssigned(data.taskView)
 
             }
@@ -37,7 +38,6 @@ export default function Completed() {
 
     }, [])
 
-    console.log(taskAssigned, "task")
 
     return (
 

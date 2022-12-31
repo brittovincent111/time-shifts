@@ -13,22 +13,22 @@ export default function Started() {
     // const Completionist = () => <span>You are good to go!</span>;
 
 
-        const [taskStarted, setTaskStarted] = useState([])
-        const[updation , setUpdation] = useState()
+    const [taskStarted, setTaskStarted] = useState([])
+    const [updation, setUpdation] = useState()
 
 
     let token = localStorage.getItem('userToken');
-        let decoded = jwt_decode(token);
-
+    let decoded = jwt_decode(token);
+    
+    /* ------------------------------ TASK STARTED ------------------------------ */
     useEffect(() => {
 
-     try {
+        try {
             const call = async () => {
 
                 const { data } = await getTasks(decoded.id, "started")
 
-                console.log(data, "data")
-                setTaskStarted(data.taskView)   
+                setTaskStarted(data.taskView)
 
             }
             call()
@@ -41,17 +41,17 @@ export default function Started() {
 
     return (
         <div className='  h-screen w-screen     backgrounddashboard'>
-                        <div className=' font-semibold text-4xl w-full flex justify-center pt-28 text-white'>Tasks Started </div>
-           
-           { !taskStarted.length == 0 ?    
-            <Card props ={taskStarted} setUpdation={setUpdation} updation={updation}  />
-            : <div className='flex flex-col w-full items-center pt-20 text-white h-screen  '>
-            <MdOutlineFeed className='text-[150px]' />
-            <div className='text-2xl'>No Pending Tasks</div>
-    
-          </div>
+            <div className=' font-semibold text-4xl w-full flex justify-center pt-28 text-white'>Tasks Started </div>
 
-           }
+            {!taskStarted.length == 0 ?
+                <Card props={taskStarted} setUpdation={setUpdation} updation={updation} />
+                : <div className='flex flex-col w-full items-center pt-20 text-white h-screen  '>
+                    <MdOutlineFeed className='text-[150px]' />
+                    <div className='text-2xl'>No Pending Tasks</div>
+
+                </div>
+
+            }
         </div>
     )
 }

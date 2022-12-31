@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react'
-import { weeklyReports } from '../API/adminApi'
-const format = require('format-duration')
+import { monthlyReports, weeklyReports } from '../API/adminApi'
+import Table from './Table'
 
 
 function MonthlyReport() {
 
     const [reports, setReports] = useState([])
 
+   
+/* ----------------------------- MONTHLY REPORT ----------------------------- */
 
     useEffect(() => {
         try {
             const call = async () => {
 
 
-                const { data } = await weeklyReports()
+                const { data } = await monthlyReports()
 
-                setReports(data.weeklyData)
+                setReports(data.monthlyData)
             }
 
             call()
@@ -29,9 +31,9 @@ function MonthlyReport() {
 
     }, [])
 
-    console.log(reports, "reports")
     return (
         <>
+        
             <div className='m-10'>
                 <div className='w-full h-10 flex justify-center text-lg font-bold'> MonthlyReport</div>
                 <div class="overflow-x-auto relative shadow-md sm:rounded-lg ">
@@ -69,25 +71,8 @@ function MonthlyReport() {
 
                                 return (
 
-                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                        <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {obj._id}
-                                        </th>
-                                        <td class="py-4 px-6">
-                                            {obj.total} hr
-                                        </td>
-                                        <td class="py-4 px-6">
-                                            {hours} hr {remaining_minutes} min
-                                        </td>
-                                        <td class="py-4 px-6">
-                                            {(obj.count)}
-                                        </td>
-
-                                        <td class="py-4 px-6 text-right">
-                                            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                        </td>
-                                    </tr>
-                                )
+                                    <Table obj={obj} hours={hours} remaining_minutes={remaining_minutes} />
+                                    )
 
                             })}
 

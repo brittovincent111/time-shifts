@@ -1,11 +1,8 @@
 import React, { useContext } from 'react'
-// import logo from '../../assets/images/round.png'
-// import user from '../../assets/images/sidebar2.png'
-// import pg from '../../assets/images/adminlogo3.png'
+
 import { Link, Outlet, useNavigate } from 'react-router-dom'
 import { FaUserAlt } from 'react-icons/fa'
 import { useState } from 'react'
-// import { UserContext } from '../../../stores/UserContext'
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import {MdFeed} from 'react-icons/md'

@@ -15,6 +15,8 @@ function Navbar() {
 
     const Navigate = useNavigate()
 
+    /* ------------------------------- LOGOUT USER ------------------------------ */
+
     const handleLogout =async(e)=>{
 
         e.preventDefault()

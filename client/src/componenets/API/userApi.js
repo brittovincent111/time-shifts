@@ -6,3 +6,4 @@ import userinstance from '../instance/axiosInstanceUser'
 
 export const getTasks = (userId, assigned)=> userinstance.get(`/get-tasks/${userId}/${assigned}`)
 export const updateTask = (details ) => userinstance.put(`/update-task` , details)
+

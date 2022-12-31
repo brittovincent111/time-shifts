@@ -16,15 +16,15 @@ import Completed from './componenets/user/completed/Completed';
 import AdminDashboard from './componenets/admin/AdminDashboard';
 import WeeklyReports from './componenets/admin/WeeklyReports';
 import MonthlyReport from './componenets/admin/MonthlyReport';
-// import SAMPLE from './componenets/user/sample/Sample.js';
-import Sample from './componenets/user/sample/Sample.js';
+import ErrorPage from './componenets/admin/Error';
+
 
 
 function App() {
   return (
     <div>
       <Router>
-      
+
 
         <Routes>
 
@@ -39,31 +39,25 @@ function App() {
             <Route path='monthly-reports' element={<MonthlyReport />} ></Route>
 
 
-            
+
 
           </Route>
-     
-          
+
+
           <Route path='/login' element={<UserLogin />} ></Route>
           <Route path='/' element={<UserStructure />}>
-          <Route path='/sample' element={<Sample />}></Route>
-
             <Route path='/dashboard' element={<UserDashboard />}></Route>
-            <Route path='/assigned' element={<Assigned/>}></Route>
-            <Route path='/started' element={<Started/>}></Route>
-            <Route path='/completed' element={<Completed/>}></Route>
-
-
-
-
-
+            <Route path='/assigned' element={<Assigned />}></Route>
+            <Route path='/started' element={<Started />}></Route>
+            <Route path='/completed' element={<Completed />}></Route>
           </Route>
 
 
+          <Route path='*' element={<ErrorPage />} />
 
 
         </Routes>
-        
+
       </Router>
 
     </div>

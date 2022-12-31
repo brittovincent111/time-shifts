@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { weeklyReports } from '../API/adminApi'
+import Table from './Table'
 const format = require('format-duration')
 
 
@@ -7,14 +8,11 @@ function WeeklyReports() {
 
     const [reports, setReports] = useState([])
 
-
+    /* ----------------------------- WEEKLY REPORTS ----------------------------- */
     useEffect(() => {
         try {
             const call = async () => {
-
-
                 const { data } = await weeklyReports()
-
                 setReports(data.weeklyData)
             }
 
@@ -29,7 +27,6 @@ function WeeklyReports() {
 
     }, [])
 
-    console.log(reports, "reports")
     return (
         <>
             <div className='m-10'>
@@ -69,25 +66,7 @@ function WeeklyReports() {
 
                                 return (
 
-                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                        <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {obj._id.date}
-                                        </th>
-                                        <td class="py-4 px-6">
-                                            {obj.total} hr
-                                        </td>
-                                        <td class="py-4 px-6">
-                                            {hours} hr {remaining_minutes} min
-                                        </td>
-                                        <td class="py-4 px-6">
-                                            {obj._id.status}
-                                        </td>
-                                        <td class="py-4 px-6">
-                                            {obj.count}
-                                        </td>
-
-                                       
-                                    </tr>
+                                    <Table obj={obj} hours={hours} remaining_minutes={remaining_minutes} />
                                 )
 
                             })}

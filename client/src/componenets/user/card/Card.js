@@ -8,13 +8,13 @@ const format = require('format-duration')
 
 function Card({ props, setUpdation, updation }) {
 
+   /* ------------------------------ ID FROM TOKEN ----------------------------- */
 
   let token = localStorage.getItem('userToken');
   let decoded = jwt_decode(token);
 
-  console.log(props, "props")
 
-
+/* ------------------------------ COMMON CARDS ------------------------------ */
 
   const handleClick = async (e, taskId, status) => {
     e.preventDefault()
@@ -37,13 +37,13 @@ function Card({ props, setUpdation, updation }) {
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, continue!'
-      }).then((result) => {
+      }).then(async(result) => {
         if (result.isConfirmed) {
          
-          const { data } =  updateTask(details)
-
-
+          const { data } = await updateTask(details)
           setUpdation(!updation)
+
+
           Swal.fire(
             'Submited!',
           

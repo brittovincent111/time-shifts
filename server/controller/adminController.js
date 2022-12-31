@@ -6,6 +6,8 @@ const userSchemma = require('../schema/userSchema')
 const controller = {
 
 
+    /* ------------------------------- ADMIN LOGIN ------------------------------ */
+
     AdminLogin: async (req, res) => {
 
         const { email, password } = req.body
@@ -15,7 +17,8 @@ const controller = {
             if (process.env.ADMIN_EMAIL == email) {
                 if (process.env.ADMIN_PASS == password) {
                     const id = process.env.ADMIN_ID
-                    const token = jwt.sign({ id }, process.env.JWT_KEY_ADMIN, {
+                    const token = jwt.sign({ id },
+                        process.env.JWT_KEY_ADMIN, {
                         expiresIn: "365d",
                     })
 
@@ -24,26 +27,28 @@ const controller = {
 
                 } else {
 
-                    res.status(401).json({ error: "Wrong password" })
+                    res.status(401).
+                        json({ error: "Wrong password" })
 
                 }
 
             } else {
 
-                res.status(401).json({ error: "Email Wrong" })
+                res.status(401).
+                    json({ error: "Email Wrong" })
 
             }
 
         } catch (e) {
-            res.status(500).json({ error: "server error" })
+            res.status(500).
+                json({ error: "server error" })
             console.log(e)
 
         }
     },
 
 
-    /* -------------------------- create user by admin -------------------------- */
-
+/* -------------------------- CREATE USER BY ADMIN -------------------------- */
     createUsers: async (req, res) => {
 
         try {
@@ -79,7 +84,8 @@ const controller = {
         } catch (error) {
 
             console.log(error)
-            res.status(500).json({ error: "something went wrong" })
+            res.status(500).
+                json({ error: "something went wrong" })
 
         }
 
@@ -113,8 +119,9 @@ const controller = {
             })
 
         } catch (error) {
-
-            console.log(error, "error")
+        
+            res.status(500).
+                json({ error: "something went wrong" })
 
         }
 
@@ -133,12 +140,15 @@ const controller = {
                 json({ success: "user created", users })
 
         } catch (error) {
-            console.log(error, "errro")
-            res.status(500).json({ error: "something went wrong" })
+
+            res.status(500).
+                json({ error: "something went wrong" })
 
 
         }
     },
+
+    /* ----------------------------- WEEKLY REPORTS ----------------------------- */
 
 
     weeklyReports: async (req, res) => {
@@ -151,12 +161,18 @@ const controller = {
                         $gte: new Date((new Date().getTime() - (7 * 24 * 60 * 60 * 1000)))
                     }
                 }
-            },{
+            }, {
 
 
                 $group: {
 
-                    _id: { "date" : {$dateToString: { format: "%Y-%m-%d", date: "$created" } }, "status" : '$status' },
+                    _id: {
+                        "date": {
+                            $dateToString:
+                                { format: "%Y-%m-%d", date: "$created" }
+                        },
+                        "status": '$status'
+                    },
                     totalTime: { $sum: '$totalTime' },
                     total: { $sum: '$time' },
                     count: { $sum: 1 },
@@ -165,24 +181,155 @@ const controller = {
             }
             ])
 
-        console.log(weeklyData, "data")
 
-        res.status(200).json({weeklyData})
-    } catch(error) {
+            res.status(200).
+                json({ weeklyData })
 
-        console.log(error, "error")
+        } catch (error) {
 
+            res.status(500).
+            json({ error: "something went wrong" })
+
+        }
+    },
+
+  /* ----------------------------- MONTHLY REPORTS ---------------------------- */
+
+
+    monthlyReport: async (req, res) => {
+
+        try {
+
+            let monthlyData = await taskSchemaa.aggregate([{
+                $match: {
+                    created: {
+                        $gte: new Date((new Date().getTime() - (365 * 24 * 60 * 60 * 1000)))
+                    }
+                }
+            }, {
+
+
+                $group: {
+
+                    _id: {
+                        "date": {
+                            $dateToString:
+                                { format: "%Y-%m", date: "$created" }
+                        },
+                        "status": '$status'
+                    },
+                    totalTime: { $sum: '$totalTime' },
+                    total: { $sum: '$time' },
+                    count: { $sum: 1 },
+
+                }
+            }
+            ])
+
+
+            res.status(200).
+                json({ monthlyData })
+        } catch (error) {
+
+             res.status(500).
+                json({ error: "something went wrong" })
+
+        }
+    },
+
+    /* -------------------------- TASK STATISTICS GRAPH ------------------------- */
+
+    taskGraph: async (req, res) => {
+        try {
+
+            let data = await taskSchemaa.aggregate([
+                {
+                    $group: {
+                        _id: { status: "$status" },
+                        count: { $sum: 1 }
+                    }
+                }
+            ])
+            res.status(200).json(data)
+
+
+        } catch (error) {
+
+
+            res.status(500).
+            json({ error: "something went wrong" })
+
+        }
+
+    },
+
+    /* ---------------------------- DASHBOARD DETAILS --------------------------- */
+
+    dashboardDetails: async (req, res) => {
+
+        try {
+
+            let userCount = await userSchemma.find().count()
+            let completedCount = await taskSchemaa.find({ status: "completed" }).count()
+            let totalCount = await taskSchemaa.find().count()
+
+
+
+            res.status(200).json({ userCount, completedCount, totalCount })
+
+        } catch (error) {
+
+            res.status(500).
+            json({ error: "something went wrong" })
+
+        }
+    },
+
+    /* -------------------------- WORK COMPLETED GRAPH -------------------------- */
+
+    workCompletedGraph : async(req,res)=>{
+
+
+        try{
+
+            let  completion= await taskSchemaa.aggregate([{ 
+                $match: {
+                    created: {
+                        $gte: new Date((new Date().getTime() - (4 * 24 * 60 * 60 * 1000)))
+                    },
+                     status : "completed"
+                }
+            },{
+
+
+                $group: {
+
+                    _id: {
+                        "date": {
+                            $dateToString:
+                                { format: "%Y-%m-%d", date: "$created" }
+                        }
+                        
+                    },
+                    
+                    count: { $sum: 1 },
+
+                }
+            }
+        
+        ])
+        
+
+        res.status(200).json(completion)
+
+
+
+        }catch(error){
+
+            res.status(500).
+            json({ error: "something went wrong" })
+        }
     }
-},
-
- monthlyReport : (req,res)=>{
-
-    try{
-
-    }catch(error){
-
-    }
- }
 
 
 
