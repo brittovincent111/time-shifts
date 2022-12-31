@@ -2,8 +2,11 @@ import React, { useEffect, useRef, useState } from 'react'
 import { addTask, viewUsers } from '../API/adminApi'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 function AdminAddTask() {
+
+    const Navigate=useNavigate()
 
     const [users, setUsers] = useState([])
     const [details, setDetails] = useState({
@@ -65,7 +68,14 @@ function AdminAddTask() {
            
            
         } catch (error) {
-            console.log(error)
+            if (error?.response?.status === 403) {
+                console.log("hiiii")
+                localStorage.removeItem('Admintoken')
+               
+                Navigate("/admin/login")
+             }else{
+               Navigate('/admin/errorPage')
+             }
         }
 
     }

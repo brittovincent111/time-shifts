@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { completedWorksGraph, graphPost, userDetails } from '../API/adminApi'
 import LineChart from './charts/LineChart'
 import PieChart from './PieChart'
@@ -14,6 +15,8 @@ function AdminDashboard() {
     totalCount: ""
 
   })
+
+  const Navigate =useNavigate()
 
   /* -------------------------- TASK STATISTICS GRAPH ------------------------- */
 
@@ -35,7 +38,14 @@ function AdminDashboard() {
         })
        
       } catch (error) {
-        console.log(error.message);
+        if (error?.response?.status === 403) {
+          console.log("hiiii")
+          localStorage.removeItem('Admintoken')
+         
+          Navigate("/admin/login")
+       }else{
+         Navigate('/admin/errorPage')
+       }
       }
     }
     graph()
@@ -62,7 +72,14 @@ function AdminDashboard() {
         })
      
       } catch (error) {
-        console.log(error.message);
+        if (error?.response?.status === 403) {
+          console.log("hiiii")
+          localStorage.removeItem('Admintoken')
+         
+          Navigate("/admin/login")
+       }else{
+         Navigate('/admin/errorPage')
+       }
       }
     }
     graph()
@@ -87,7 +104,14 @@ function AdminDashboard() {
             totalCount: data.totalCount })
 
       } catch (error) {
-        console.log("error")
+        if (error?.response?.status === 403) {
+          console.log("hiiii")
+          localStorage.removeItem('Admintoken')
+         
+          Navigate("/admin/login")
+       }else{
+         Navigate('/admin/errorPage')
+       }
 
       }
 

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { monthlyReports, weeklyReports } from '../API/adminApi'
 import Table from './Table'
 
@@ -6,7 +7,7 @@ import Table from './Table'
 function MonthlyReport() {
 
     const [reports, setReports] = useState([])
-
+    const Navigate =useNavigate()
    
 /* ----------------------------- MONTHLY REPORT ----------------------------- */
 
@@ -23,8 +24,14 @@ function MonthlyReport() {
             call()
 
         } catch (error) {
-
-            console.log(error, "error")
+            if (error?.response?.status === 403) {
+                console.log("hiiii")
+                localStorage.removeItem('Admintoken')
+               
+                Navigate("/admin/login")
+             }else{
+               Navigate('/admin/errorPage')
+             }
 
         }
 

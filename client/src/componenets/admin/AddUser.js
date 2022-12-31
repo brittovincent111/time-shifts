@@ -62,9 +62,14 @@ function AddUser() {
         } catch (error) {
             if (error?.response?.status === 401) {
                 setErrorMessage(error.response.data.error);
-            } else {
-                console.log(error)
-            }
+            } else if (error?.response?.status === 403) {
+                console.log("hiiii")
+                localStorage.removeItem('Admintoken')
+               
+                Navigate("/admin/login")
+             }else{
+               Navigate('/admin/errorPage')
+             }
         }
     }
     return (

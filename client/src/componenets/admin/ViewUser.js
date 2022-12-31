@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { viewUsers } from '../API/adminApi'
 
 function ViewUser() {
@@ -7,7 +8,7 @@ function ViewUser() {
     const [currentPage, setCurrentPage] = useState(1);
     const [count , setCount] = useState('')
 
-
+    const Navigate =useNavigate()
     
 
 
@@ -29,7 +30,14 @@ function ViewUser() {
 
         } catch (error) {
             
-    console.log(error)
+            if (error?.response?.status === 403) {
+                console.log("hiiii")
+                localStorage.removeItem('Admintoken')
+               
+                Navigate("/admin/login")
+             }else{
+               Navigate('/admin/errorPage')
+             }
         }
     },[currentPage])
 

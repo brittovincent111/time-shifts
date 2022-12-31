@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { weeklyReports } from '../API/adminApi'
 import Table from './Table'
 const format = require('format-duration')
@@ -7,6 +8,7 @@ const format = require('format-duration')
 function WeeklyReports() {
 
     const [reports, setReports] = useState([])
+    const Navigate =useNavigate()
 
     /* ----------------------------- WEEKLY REPORTS ----------------------------- */
     useEffect(() => {
@@ -20,7 +22,14 @@ function WeeklyReports() {
 
         } catch (error) {
 
-            console.log(error, "error")
+            if (error?.response?.status === 403) {
+                console.log("hiiii")
+                localStorage.removeItem('Admintoken')
+               
+                Navigate("/admin/login")
+             }else{
+               Navigate('/admin/errorPage')
+             }
 
         }
 
