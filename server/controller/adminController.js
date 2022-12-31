@@ -133,11 +133,14 @@ const controller = {
     viewUsers: async (req, res) => {
 
         try {
-
-            let users = await userSchemma.find()
+            
+            let count = await userSchemma.find().count()
+            let users = await userSchemma.find().skip((req.params.page - 1) * 5)
+            .limit(5)
+            .exec();
 
             res.status(200).
-                json({ success: "user created", users })
+                json({ success: "user created", users ,count})
 
         } catch (error) {
 

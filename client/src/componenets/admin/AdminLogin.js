@@ -51,8 +51,8 @@ function AdminLogin() {
               })
            }
        } catch (error) {
-           console.log(error.message);
-       }
+        // navigate('/admin/login')
+    }
    }
     return (
         <form >

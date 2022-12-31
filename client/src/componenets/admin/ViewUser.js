@@ -4,6 +4,12 @@ import { viewUsers } from '../API/adminApi'
 function ViewUser() {
 
     const [users, setUsers] = useState([])
+    const [currentPage, setCurrentPage] = useState(1);
+    const [count , setCount] = useState('')
+
+
+    
+
 
     /* ------------------------------- LIST USERS ------------------------------- */
 
@@ -13,20 +19,37 @@ function ViewUser() {
 
             const call = async () => {
 
-                const { data } = await viewUsers()
-
-                
-
+                const { data } = await viewUsers(currentPage)
                 setUsers(data.users)
+                setCount(data.count)
 
             }
 
             call()
 
         } catch (error) {
-
+            
+    console.log(error)
         }
-    },[])
+    },[currentPage])
+
+    const nextPage=(e)=>{
+        e.preventDefault()
+
+        setCurrentPage(currentPage +1)
+    }
+
+    const previousPage=(e)=>{
+        e.preventDefault()
+
+        setCurrentPage(currentPage -1)
+    }
+   
+    const next = ((currentPage+1 )* 5 ) -4 
+
+    console.log(currentPage,"fff")
+
+    console.log(count , next ,"klkkl")
 
     
     return (
@@ -79,6 +102,21 @@ function ViewUser() {
                         </tbody>
                     </table>
                 </div>
+        
+            <div className='flex justify-between mt-5 w-max'>
+                { currentPage == 1? 
+              <div className='w-max h-max p-1 ml-2 shadow-md bg-gray-200' >Previous</div> :
+                <div className='w-max h-max p-1 ml-2 shadow-md cursor-pointer' onClick={previousPage}>Previous</div>
+                }
+                <div className='p-1 ml-2'>{currentPage}</div>
+                {
+                    next < count ?
+
+                    <div className='w-max h-max p-1 ml-2 shadow-md cursor-pointer' onClick={nextPage}>Next</div>:
+                    <div className='w-max h-max p-1 ml-2 shadow-md bg-gray-200' >Next</div>
+                }
+                  
+            </div>
             </div>
 
         </>

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { completedWorksGraph, graphPost, userDetails } from '../API/adminApi'
 import LineChart from './charts/LineChart'
-import PieChart from './charts/PieChart'
+import PieChart from './PieChart'
+
 
 function AdminDashboard() {
 

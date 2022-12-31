@@ -5,7 +5,7 @@ const router = express.Router()
 
 router.post('/login' , AdminLogin)
 router.post('/create-user' ,createUsers)
-router.get('/view-user' , adminVerifyJWT ,viewUsers)
+router.get('/view-user/:page' , adminVerifyJWT ,viewUsers)
 router.post ('/add-task' ,adminVerifyJWT, taskForm )
 router.get('/weekly-report' , adminVerifyJWT , weeklyReports)
 router.get('/monthly-report' , adminVerifyJWT , monthlyReport)

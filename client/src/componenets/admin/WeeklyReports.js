@@ -27,6 +27,7 @@ function WeeklyReports() {
 
     }, [])
 
+    console.log(reports, "reports")
     return (
         <>
             <div className='m-10'>

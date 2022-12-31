@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { addTask, viewUsers } from '../API/adminApi'
 
 function AdminAddTask() {
@@ -10,6 +10,8 @@ function AdminAddTask() {
         description: "",
         time: ""
     })
+
+    const formRef = useRef(null)
 
     /* -------------------------- GET VALUES FROM FORM -------------------------- */
 
@@ -51,10 +53,18 @@ function AdminAddTask() {
     const onLogin = async (e) => {
         e.preventDefault()
 
-
+       console.log(formRef.current , "current")
+        formRef.current.reset();
         try {
-            console.log(details)
+            console.log(details ,"details")
             const { data } = await addTask(details)
+            setDetails({
+                taskname: '',
+                assigned: "",
+                description: "",
+                time: ""
+
+            })
         } catch (error) {
             console.log(error)
         }
@@ -65,7 +75,7 @@ function AdminAddTask() {
     return (
         <div className=' h-screen flex justify-center items-center'>
 
-            <form class="w-full max-w-lg" onSubmit={onLogin}>
+            <form ref={formRef} class="w-full max-w-lg" >
                 <div class="flex flex-wrap -mx-3 mb-6">
                     <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
@@ -78,10 +88,11 @@ function AdminAddTask() {
                     </div>
                     <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-                            Estimated Time
+                            Estimated Time (hr)
                         </label>
                         <input name='time' class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name"
                          type="text" placeholder="Estimated Time"
+                        
                           onChange={(e) => { onHandleChange(e) }} 
                           required/>
                     </div>
@@ -121,7 +132,7 @@ function AdminAddTask() {
                         <p class="text-gray-600 text-xs italic">Please add complete details of project</p>
                     </div>
                 </div>
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <button onClick={onLogin} type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     Submit
                 </button>
             </form>

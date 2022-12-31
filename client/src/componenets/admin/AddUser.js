@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import axios from 'axios'
 import { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -17,6 +17,7 @@ function AddUser() {
 
     const [errorMessage, setErrorMessage] = useState('')
     const Navigate = useNavigate()
+    const formRef=useRef(null)
 
     /* ---------------------------- ADD USER BY ADMIN --------------------------- */
 
@@ -48,7 +49,7 @@ function AddUser() {
                 }
 
                 let { response } = await addUser(details)
-
+                formRef.current.reset();
 
                 const notify = () => toast("User Created");
                 notify()
@@ -92,7 +93,7 @@ function AddUser() {
                 pauseOnHover
                 theme="dark"
             />
-            <form >
+            <form ref={formRef}>
 
                 <div className=" min-h-screen flex flex-col bg-gray-100 ">
 
@@ -115,7 +116,7 @@ function AddUser() {
                                 type="text"
                                 className="block border border-grey-light w-full p-3 rounded mb-4"
                                 name="email"
-
+                                // value={email}
                                 onChange={(e) => { setEmail(e.target.value) }}
 
                                 placeholder="Email"  required/>
