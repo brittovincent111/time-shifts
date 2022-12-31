@@ -1,0 +1,7 @@
+.mainPhoto {
+
+    background-image: url('../../../../public//images/developer.jpg');
+    background-size:cover;
+   background-position:center;
+    background-repeat: no-repeat;
+}
